@@ -5,11 +5,14 @@
 #define PIN_LEFT_DIR1  7//in1
 #define PIN_LEFT_DIR2  8//in2
 #define PIN_LEFT_EN    6//ena
-#define PIN_RIGHT_DIR1 2//in3
-#define PIN_RIGHT_DIR2 4//in4
+#define PIN_RIGHT_DIR1 4//in3
+#define PIN_RIGHT_DIR2 2//in4
 #define PIN_RIGHT_EN   5//enb
 #define PIN_SERVO1     10
 #define PIN_SERVO2     11
+
+#define MAX_SPEED    255
+#define SLOW_SPEED   125
 
 MotorDC leftWheel;
 MotorDC rightWheel;
@@ -17,6 +20,8 @@ Servo servo1;
 Servo servo2;
 int pos_servo1 = 0;
 int pos_servo2 = 0;
+
+int wheel_speed = 255;
 
 void increment(Servo servo, int step){
   int val = servo.read() + step;
@@ -61,8 +66,39 @@ void testMotor(){
 }
 
 void forward(){
-  leftWheel.setSpeed(255, FORWARD);
-  rightWheel.setSpeed(255, FORWARD);
+  leftWheel.setSpeed(wheel_speed, FORWARD);
+  rightWheel.setSpeed(wheel_speed, FORWARD);
+}
+
+void backward(){
+  leftWheel.setSpeed(wheel_speed, BACKWARDS);
+  rightWheel.setSpeed(wheel_speed, BACKWARDS);
+}
+
+void turnRight(){
+  leftWheel.setSpeed(wheel_speed, FORWARD);
+  rightWheel.setSpeed(wheel_speed, BACKWARDS);
+}
+
+void turnLeft(){
+  leftWheel.setSpeed(wheel_speed, FORWARD);
+  rightWheel.setSpeed(wheel_speed, BACKWARDS);
+}
+
+int state = 0;
+void changeSpeed(){
+  switch (state)
+  {
+  default:
+  case 0:{
+    state = 1;
+    wheel_speed = SLOW_SPEED;
+  }
+  case 1:{
+    state = 0;
+    wheel_speed = MAX_SPEED;
+  }
+  }
 }
 
 void setup() {
@@ -74,5 +110,24 @@ void setup() {
 }
 
 void loop() {
-  forward();
+  if(Serial.available())
+  {
+    char In=Serial.read();
+    if(In=='w' || In=='W'){
+      forward();
+    }
+    if(In=='s' || In=='S'){
+      backward();
+    }
+    if(In=='a' || In=='A'){
+      turnLeft();
+    }
+    if(In=='d' || In=='D'){
+      turnRight();
+    }
+    if(In=='f' || In=='F'){
+      changeSpeed();
+    }
+
+  }
 }
