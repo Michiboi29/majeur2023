@@ -114,20 +114,26 @@ void loop() {
   {
     char In=Serial.read();
     if(In=='w' || In=='W'){
+      Serial.println("w");
       forward();
     }
     if(In=='s' || In=='S'){
+      Serial.println("s");
       backward();
     }
     if(In=='a' || In=='A'){
+      Serial.println("a");
       turnLeft();
     }
     if(In=='d' || In=='D'){
+      Serial.println("d");
       turnRight();
     }
     if(In=='f' || In=='F'){
+      Serial.println("f");
       changeSpeed();
     }
+    
 
   }
 }
