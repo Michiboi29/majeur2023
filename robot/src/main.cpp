@@ -65,6 +65,11 @@ void testMotor(){
   delay(100);
 }
 
+void stop(){
+  leftWheel.stop();
+  rightWheel.stop();
+}
+
 void forward(){
   leftWheel.setSpeed(wheel_speed, FORWARD);
   rightWheel.setSpeed(wheel_speed, FORWARD);
@@ -89,15 +94,15 @@ int state = 0;
 void changeSpeed(){
   switch (state)
   {
-  default:
-  case 0:{
-    state = 1;
-    wheel_speed = SLOW_SPEED;
-  }
-  case 1:{
-    state = 0;
-    wheel_speed = MAX_SPEED;
-  }
+    default:
+    case 0:{
+      state = 1;
+      wheel_speed = SLOW_SPEED;
+    }
+    case 1:{
+      state = 0;
+      wheel_speed = MAX_SPEED;
+    }
   }
 }
 
@@ -113,6 +118,7 @@ void loop() {
   if(Serial.available())
   {
     char In=Serial.read();
+    
     if(In=='w' || In=='W'){
       Serial.println("w");
       forward();
@@ -132,6 +138,23 @@ void loop() {
     if(In=='f' || In=='F'){
       Serial.println("f");
       changeSpeed();
+    }
+
+    if(In=='u' || In=='U'){
+      Serial.println("u");
+      servo1.write(100);
+    }
+    if(In=='j' || In=='J'){
+      Serial.println("j");
+      servo1.write(60);
+    }
+    if(In=='o' || In=='O'){
+      Serial.println("o");
+      servo1.write(100);
+    }
+    if(In=='l' || In=='L'){
+      Serial.println("l");
+      servo1.write(60);
     }
     
 
