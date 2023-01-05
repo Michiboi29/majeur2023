@@ -132,7 +132,7 @@ void loop() {
     }
     else if(In=='f' || In=='F'){
       changeSpeed();
-    } else {
+    } else if(In == -1) {
       stop();
     }
 
