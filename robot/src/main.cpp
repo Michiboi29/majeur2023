@@ -143,7 +143,7 @@ void loop() {
     if(In=='f' || In=='F'){
       Serial.println("f");
       changeSpeed();
-    } else {
+    } else if(In == -1) {
       stop();
     }
 
