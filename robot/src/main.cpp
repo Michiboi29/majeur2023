@@ -85,6 +85,11 @@ void turnLeft(){
   rightWheel.setSpeed(wheel_speed, BACKWARDS);
 }
 
+void stop(){
+  leftWheel.stop();
+  rightWheel.stop();
+}
+
 int state = 0;
 void changeSpeed(){
   switch (state)
@@ -127,6 +132,8 @@ void loop() {
     }
     if(In=='f' || In=='F'){
       changeSpeed();
+    } else {
+      stop();
     }
 
   }
