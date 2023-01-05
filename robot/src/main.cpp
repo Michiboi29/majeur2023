@@ -23,6 +23,9 @@ int pos_servo2 = 0;
 
 int wheel_speed = 255;
 
+long intervale = 500;
+unsigned long previousTime = millis();
+
 void increment(Servo servo, int step){
   int val = servo.read() + step;
   servo.write(val);
@@ -90,11 +93,6 @@ void turnLeft(){
   rightWheel.setSpeed(wheel_speed, BACKWARDS);
 }
 
-void stop(){
-  leftWheel.stop();
-  rightWheel.stop();
-}
-
 int state = 0;
 void changeSpeed(){
   switch (state)
@@ -120,6 +118,8 @@ void setup() {
 }
 
 void loop() {
+
+  unsigned long currentTime = millis();
   if(Serial.available())
   {
     char In=Serial.read();
@@ -128,25 +128,27 @@ void loop() {
       Serial.println("w");
       forward();
     }
-    if(In=='s' || In=='S'){
+    else if(In=='s' || In=='S'){
       Serial.println("s");
       backward();
     }
-    if(In=='a' || In=='A'){
+    else if(In=='a' || In=='A'){
       Serial.println("a");
       turnLeft();
     }
-    if(In=='d' || In=='D'){
+    else if(In=='d' || In=='D'){
       Serial.println("d");
       turnRight();
     }
-    if(In=='f' || In=='F'){
+    else if(In=='f' || In=='F'){
       Serial.println("f");
       changeSpeed();
-    } else if(In == -1) {
-      stop();
     }
-
+    else if(In==' '){
+      Serial.println("space");
+      stop();
+    }  
+    
     if(In=='u' || In=='U'){
       Serial.println("u");
       servo1.write(100);
@@ -165,5 +167,10 @@ void loop() {
     }
     
 
+  }
+  else if (currentTime - previousTime > intervale)
+  {
+    stop();
+    previousTime = currentTime;
   }
 }
