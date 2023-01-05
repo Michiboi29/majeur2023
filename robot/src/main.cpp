@@ -12,7 +12,9 @@
 #define PIN_SERVO2     11
 
 #define MAX_SPEED    255
-#define SLOW_SPEED   125
+#define HALF_SPEED   220
+#define SLOW_SPEED    190
+#define SLOWER_SPEED   150
 
 MotorDC leftWheel;
 MotorDC rightWheel;
@@ -100,11 +102,27 @@ void changeSpeed(){
     default:
     case 0:{
       state = 1;
-      wheel_speed = SLOW_SPEED;
+      wheel_speed = HALF_SPEED;
+      Serial.println("half speed");
+      break;
     }
     case 1:{
+      state = 2;
+      wheel_speed = SLOW_SPEED;
+      Serial.println("slow speed");
+      break;
+    }
+    case 2:{
+      state = 3;
+      wheel_speed = SLOWER_SPEED;
+      Serial.println("slower speed");
+      break;
+    }
+    case 3:{
       state = 0;
       wheel_speed = MAX_SPEED;
+      Serial.println("max speed");
+      break;
     }
   }
 }
@@ -128,23 +146,23 @@ void loop() {
       Serial.println("w");
       forward();
     }
-    else if(In=='s' || In=='S'){
+    if(In=='s' || In=='S'){
       Serial.println("s");
       backward();
     }
-    else if(In=='a' || In=='A'){
+    if(In=='a' || In=='A'){
       Serial.println("a");
       turnLeft();
     }
-    else if(In=='d' || In=='D'){
+    if(In=='d' || In=='D'){
       Serial.println("d");
       turnRight();
     }
-    else if(In=='f' || In=='F'){
+    if(In=='f' || In=='F'){
       Serial.println("f");
       changeSpeed();
     }
-    else if(In==' '){
+    if(In==' '){
       Serial.println("space");
       stop();
     }  
@@ -159,13 +177,18 @@ void loop() {
     }
     if(In=='o' || In=='O'){
       Serial.println("o");
-      servo1.write(100);
+      servo2.write(100);
     }
     if(In=='l' || In=='L'){
       Serial.println("l");
+      servo2.write(60);
+    }
+    /*
+    if(In=='p' || In=='P'){
+      Serial.println("l");
       servo1.write(60);
     }
-    
+    */
 
   }
   else if (currentTime - previousTime > intervale)
