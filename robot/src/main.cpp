@@ -121,16 +121,16 @@ void loop() {
     if(In=='w' || In=='W'){
       forward();
     }
-    if(In=='s' || In=='S'){
+    else if(In=='s' || In=='S'){
       backward();
     }
-    if(In=='a' || In=='A'){
+    else if(In=='a' || In=='A'){
       turnLeft();
     }
-    if(In=='d' || In=='D'){
+    else if(In=='d' || In=='D'){
       turnRight();
     }
-    if(In=='f' || In=='F'){
+    else if(In=='f' || In=='F'){
       changeSpeed();
     } else {
       stop();
